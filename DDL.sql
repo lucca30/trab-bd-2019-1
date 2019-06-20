@@ -5,7 +5,6 @@ SET FOREIGN_KEY_CHECKS=0;
 
 drop table if exists 
     TransporteContainer,
-    PedidoTransporte,
 	PessoaFisica,
     PessoaJuridica,
     Cliente,
@@ -27,11 +26,9 @@ drop table if exists
     Transporte,
     Cobre,
     Estoca,
-    Contem,
-    PedidoContainer;
-
+    PedidoContainerProduto;
+    
 SET FOREIGN_KEY_CHECKS=1;
-
 /*____________________________CRIAÇÃO DAS TABELAS______________________________*/
 
 /*OBSERVAÇÃO IMPORTANTE: as definições de chaves estrangeiras estão no final do script,
@@ -167,7 +164,7 @@ PRIMARY KEY (id)
 
 CREATE TABLE TipoVeiculo (
 
-id INT,
+id INT not null,
 nome VARCHAR(50),
 numMaxContainers INT, 
 
@@ -312,37 +309,15 @@ idContainer_SPK INT,
 PRIMARY KEY(idLote_SPK,idContainer_SPK)
 );
 
-CREATE TABLE Contem (
-/*Função: guarda info. de qual container contém qual produto.*/
-
-/*Chave estrangeira, indica o produto que está sendo transportado*/
-idProduto_FK INT,
-
-/*Chave estrangeira, indica o container que está transportando*/
-idContainer_FK INT,
-
-dataInicio DATE,
-dataFim DATE,
-quantidade INT,
-
-CONSTRAINT CHK_dataInicio
-	CHECK(dataInicio <= dataFim),
-
-
-PRIMARY KEY (idProduto_FK, idContainer_FK, dataInicio, dataFim)
+CREATE TABLE PedidoContainerProduto(
+	idPedido INT,
+    idContainer INT,
+    idProduto INT,
+    quantidade INT,
+    
+    PRIMARY KEY(idPedido, idContainer, idProduto)
 );
 
-CREATE TABLE PedidoTransporte (
-    idPedido_FK INT,
-    idTransporte_FK INT,
-    PRIMARY KEY(idPedido_FK, idTransporte_FK)
-);
-
-CREATE TABLE PedidoContainer (
-	idPedido_FK INT,
-    idContainer_FK INT,
-    PRIMARY KEY(idPedido_FK, idContainer_FK)
-);
 
 /*_________________________DEFINIÇÃO DE CHAVES ESTRANGEIRAS_________________________________*/
 
@@ -387,17 +362,6 @@ ALTER TABLE Estoquista ADD FOREIGN KEY(idFuncionario_SPK) REFERENCES Funcionario
 
 ALTER TABLE Pilota ADD foreign key (idMotorista_FK) REFERENCES Motorista (idFuncionario_SPK);
 ALTER TABLE Pilota ADD foreign key (idTipoVeiculo_FK) REFERENCES TipoVeiculo (id);
-
-/*Chaves estrangeiras da tabela Contem*/
-ALTER TABLE Contem ADD FOREIGN KEY(idProduto_FK) REFERENCES Produto (idProduto_PK);
-ALTER TABLE Contem ADD FOREIGN KEY(idContainer_FK) REFERENCES Container (idContainer_PK);
-
-/*Chaves estrangeiras da tabela PedidoTransporte*/
-ALTER TABLE PedidoTransporte ADD foreign key(idPedido_FK) references Pedido(idPedido_PK);
-ALTER TABLE PedidoTransporte ADD foreign key(idTransporte_FK) references Transporte(id);
-
-ALTER TABLE PedidoContainer ADD foreign key(idPedido_FK) references Pedido(idPedido_PK);
-ALTER TABLE PedidoContainer ADD foreign key(idContainer_FK) references Container(idContainer_PK);
 
 /*Chaves estrangeiras da tabela Transporte*/
 ALTER TABLE Transporte ADD FOREIGN KEY(idRota_FK) REFERENCES Rota (id);

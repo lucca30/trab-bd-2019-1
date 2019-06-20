@@ -78,7 +78,10 @@ values
 (1, '2018-04-01', '2018-03-05',1, 9, 1),
 (2, '2019-06-18', '2019-03-15',2, 3, 3),
 (3, '2019-06-18', '2019-03-15',7, 1, 4),
-(4, '2019-06-18', '2019-03-15',5, 3, 1)
+(4, '2019-06-17', '2019-03-16',5, 3, 1),
+(5, '2019-04-18', '2019-03-15',8, 3, 1),
+(6, '2019-02-18', '2019-01-10',4, 2, 1),
+(7, '2019-06-18', '2019-03-15',7, 10, 1)
 ;
 
 insert into Rota (id,idUnidadeOrigem_SPK,idUnidadeDestino_SPK,idTipoVeiculo_FK)
@@ -104,7 +107,10 @@ insert into Cobre (idPedido_SPK, idAcidente_SPK, idSeguradora_SPK)
 values
 (1, 2, 4),
 (3, 1, 3),
-(4, 3, 4)
+(4, 3, 4),
+(5, 1, 2),
+(6, 2, 1),
+(6, 1, 3)
 ;
 
 insert into Armazem (idArmazem_PK,idUnidade_FK) 
@@ -191,31 +197,27 @@ values
 (1, 1)
 ;
 
-insert into Contem (idProduto_FK,idContainer_FK,dataInicio,dataFim,quantidade)
+insert into PedidoContainerProduto (idProduto,idContainer,quantidade, idPedido)
 values
-(1, 1, '2018-03-05', '2018-04-01', 20),
-(2, 1, '2018-03-05', '2018-04-01', 10),
-(3, 2, '2019-02-01', '2019-02-20', 20),
-(4, 3, '2017-04-15', '2018-05-01', 15),
-(4, 2, '2018-03-05', '2018-04-01', 5),
-(3, 2, '2018-03-05', '2018-04-01', 7)
-
-;
-
-insert into PedidoContainer(idPedido_FK, idContainer_FK)
-values
-(1, 1),
-(1, 2)
+(1, 1, 20, 1),
+(2, 1, 10, 1),
+(3, 2, 20, 1),
+(4, 3, 15, 2),
+(4, 2, 5, 1),
+(3, 2, 7, 3)
 ;
 
 
 insert into Transporte (id,idRota_FK,idAcidente_FK,idVeiculo_FK,idMotorista_FK,dataInicio,dataFim)
 values
-(1, 8, null, 1, 2, "2018-05-01", "2018-05-03"),
+(1, 8, 2, 1, 2, "2018-05-01", "2018-05-03"),
 (2, 6, null, 5, 5, "2019-06-04", "2019-06-07"),
 (3, 6, null, 6, 1, "2019-01-02", "2019-01-03"),
-(4, 3, 1, 3, 4, "2019-06-11", "2019-06-13"),
-(5, 7, null, 2, 10, "2019-04-30", "2019-05-02")
+(4, 3, 2, 3, 4, "2019-06-11", "2019-06-13"),
+(5, 7, null, 2, 10, "2019-04-30", "2019-05-02"),
+(6, 6, 2, 5, 5, "2020-06-04", "2020-06-07"),
+(7, 7, 1, 2, 10, "2019-05-13", "2019-05-16"),
+(8, 8, 3, 1, 2, "2021-05-01", "2021-05-03")
 ;
 
 insert into TransporteContainer (idTransporte_FK, idContainer_FK)
@@ -224,11 +226,4 @@ values
 (2, 3),
 (2, 4),
 (3, 5)
-;
-
-insert into PedidoTransporte (idPedido_FK, idTransporte_FK)
-values
-(1, 1),
-(1, 2), 
-(3, 2)
 ;
