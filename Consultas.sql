@@ -76,9 +76,19 @@ leve para a unidade de destino
 /*
 Consulta 5
 
-Listar todos os pedidos que sofreram um acidente e possuíam cobertura para o acidente ocorrido
+Listar todos os pedidos que sofreram um acidente
 
 */
+
+select distinct P.idPedido_PK from Pedido as P
+	inner join PedidoContainerProduto as PCP on
+		PCP.idPedido = P.idPedido_PK
+	inner join TransporteContainer as TC on
+		TC.idContainer_FK = PCP.idContainer
+	inner join Transporte as T on
+		T.id = TC.idTransporte_FK
+        
+	where T.idAcidente_FK is not null;
 
 
 /*
