@@ -94,9 +94,23 @@ select distinct P.idPedido_PK from Pedido as P
 /*
 Consulta 6
 
-Dada a chegada do transporte de ID 1 na sua unidade de destino, liste todos os lotes para locação nessa data
+Dada a chegada do transporte de ID 1 na sua unidade de destino, liste  a localização de 
+todos os lotes disponíveis nessa data
 */
 
+select concat('Armazém ', idArmazem_PK, ', setor ', setor, ', posição ', posicao) as 'Localização' from
+(select R.idUnidadeDestino_SPK as 'Unidade', dataFim from Transporte as T 
+	left join Rota as R 
+		on R.id = T.idRota_FK
+where T.id = 1) as SQ1
+	left join Armazem as A on
+		A.idUnidade_FK = SQ1.Unidade
+	left join Lote as L on
+		L.idArmazem_FK = A.idArmazem_PK
+	left join Estoca as E on
+		E.idLote_SPK = L.idLote_PK
+	where E.dataEstoc <> SQ1.dataFim
+;
 
 /*
 Consulta 7
