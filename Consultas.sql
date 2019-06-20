@@ -73,6 +73,7 @@ leve para a unidade de destino
 */
 
 
+
 /*
 Consulta 5
 
@@ -133,8 +134,16 @@ Consulta 9
 Listar a quantidade de lotes que existem em cada uma das unidades. (Lembrando que cada unidade possui
 vários Armazéns e os Armazéns possuem vários lotes)
 
-
 */
+select U.idUnidade_PK as Unidade , count(L.idLote_PK) as 'Total de Lotes' from Unidade as U 
+	left join Armazem as A on
+		A.idUnidade_FK = U.idUnidade_PK
+	inner join Lote as L on
+		L.idArmazem_FK = A.idArmazem_PK
+	group by U.idUnidade_PK
+;
+
+
 
 
 /*
